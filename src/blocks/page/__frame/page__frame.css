@@ -1,0 +1,5 @@
+.page__frame {
+  position: absolute;
+  max-width: fit-content;
+  max-height: fit-content;
+}

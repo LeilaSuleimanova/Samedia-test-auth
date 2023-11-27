@@ -1,0 +1,22 @@
+.form__button {
+  border-radius: 4px;
+  background: linear-gradient(90deg, #b7903b 0%, #cfaa59 100%);
+  color: #fff;
+  text-align: center;
+  font-family: "Roboto";
+  font-size: 14px;
+  font-weight: 500;
+  padding: 16px 24px;
+  width: 100%;
+  max-width: 175px;
+  z-index: 1;
+  border: none;
+}
+
+/* .form__button:disabled {
+  background: #cecece;
+} */
+
+.form__button:hover {
+  cursor: pointer;
+}

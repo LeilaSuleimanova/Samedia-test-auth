@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Authorization</title>
+</head>
+
+<body class="body">
+  <div class="page">
+    <img src="<%=require('./images/frame.png')%>" alt="Рамка" class="page__frame">
+    <div class="form section" id="form">
+      <div class="form__auth section">
+        <img src="<%=require('./images/auth1.png')%>" alt="Логотип" class="form__logo">
+        <h1 class="form__title">Авторизация</h1>
+        <form class="form__inputs" id="form-inputs" name="form-inputs" novalidate>
+          <label for="email-number">
+            <input id="email-number" class="form__input form__input-email" name="email-number" type="url number"
+              placeholder="Email или телефон" required>
+
+            <span id="email-error" class="form__error"></span>
+          </label>
+
+          <label for="password">
+            <input id="password" minlength="2" maxlength="30" class="form__input form__input-password" name="password"
+              type="password" placeholder="Пароль" required>
+
+            <span id="password-error" class="form__error"></span>
+          </label>
+          <button class="form__button" type="submit">Войти</button>
+        </form>
+      </div>
+
+
+    </div>
+  </div>
+
+</body>
+
+</html>
