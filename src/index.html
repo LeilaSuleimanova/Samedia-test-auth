@@ -18,24 +18,30 @@
           <label for="email-number">
             <input id="email-number" class="form__input form__input-email" name="email-number" type="url number"
               placeholder="Email или телефон" required>
-
-            <span id="email-error" class="form__error"></span>
+            <span id="email-error"></span>
           </label>
 
           <label for="password">
             <input id="password" minlength="2" maxlength="30" class="form__input form__input-password" name="password"
               type="password" placeholder="Пароль" required>
-
-            <span id="password-error" class="form__error"></span>
+            <span id="password-error"></span>
           </label>
+          <p class="form__error"></p>
           <button class="form__button" type="submit">Войти</button>
         </form>
+        <div class="success">
+          <p class="success__text">Вы успешно авторизованы!</p>
+        </div>
+        <div class="preloader">
+          <div class="preloader__row">
+            <div class="preloader__item"></div>
+            <div class="preloader__item"></div>
+          </div>
+        </div>
       </div>
-
 
     </div>
   </div>
-
 </body>
 
 </html>

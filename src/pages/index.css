@@ -12,3 +12,9 @@
 @import url(../blocks/form/__input/form__input.css);
 @import url(../blocks/form/__button/form__button.css);
 @import url(../blocks/form/__inputs/form__inputs.css);
+@import url(../blocks/success/success.css);
+@import url(../blocks/success/__text/success__text.css);
+@import url(../blocks/preloader/preloader.css);
+@import url(../blocks/preloader/__item/preloader__item.css);
+@import url(../blocks/preloader/__row/preloader__row.css);
+@import url(../blocks/form/__error/form__error.css);

@@ -1,0 +1,9 @@
+.form__error {
+  display: none;
+  margin-top: -1px;
+  margin-bottom: 16px;
+  font-size: 12px;
+  font-style: italic;
+  color: #f65454;
+  text-align: center;
+}
