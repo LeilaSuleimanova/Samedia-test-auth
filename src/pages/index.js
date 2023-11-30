@@ -42,12 +42,12 @@ form.onsubmit = function (e) {
       document.querySelector('.form__error').style.display = "block";
 
     } else {
-      authorize();
+      authorize(emailNumberVal, inputPassword);
     }
   }
 }
 
-function authorize() {
+function authorize(emailNumberVal, inputPassword) {
 
   // Отправить запрос на сервер
   // (API не рабочий или данные логина/пароля недостоверные?)
@@ -57,7 +57,7 @@ function authorize() {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      email_number: emailNumberVal.value,
+      email_number: emailNumberVal,
       password: inputPassword.value
     })
   })
