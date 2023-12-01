@@ -6,6 +6,19 @@ let form = document.querySelector('.form__inputs'),
   inputPassword = document.querySelector('.form__input-password'),
   successText = document.querySelector('.success__text'),
   preloader = document.querySelector('.preloader');
+const loader = '<span class="preloader"></span>'
+const replaceElementContent = (element, content) => {
+  element.innerHTML = content;
+};
+const submitButton = document.querySelector('.form__button');
+
+const removeElement = (element) => {
+  if (element) {
+    element.remove();
+  }
+};
+
+let error;
 
 // Функция валидации email или номера телефона
 function validateEmailNumber(inputVal) {
@@ -14,78 +27,81 @@ function validateEmailNumber(inputVal) {
   return reEmail.test(String(inputVal).toLowerCase()) || reNumber.test(inputVal);
 }
 
-// Обработчик отправки формы
-form.onsubmit = function (e) {
-  e.preventDefault(); // Отменить отправку формы по умолчанию
+form.onsubmit = async function (e) {
+  e.preventDefault(); // отменить отправку формы по умолчанию
 
+  replaceElementContent(submitButton, loader);
+  removeElement(error);
   let emailNumberVal = inputEmailNumber.value.trim();
   let emptyInputs = Array.from(formInputs).filter(input => input.value === '');
 
-  formInputs.forEach(function (input) {
+  for (let input of formInputs) {
     input.classList.remove('error');
-  });
+  }
 
-  // Проверяем, заполнены ли все поля
+  // проверяем, заполнены ли все поля
   if (emptyInputs.length !== 0) {
-    // Если есть пустые поля, добавляем класс 'error' к этим полям
-    emptyInputs.forEach(function (input) {
+    // если есть пустые поля, добавляем класс 'error' к этим полям
+    for (let input of emptyInputs) {
       input.classList.add('error');
-    });
-    document.querySelector('.form__error').innerText = 'Поля формы не заполены';
+    }
+    document.querySelector('.form__error').innerText = 'поля формы не заполнены';
     document.querySelector('.form__error').style.display = "block";
-  } else {
-    // Если все поля заполнены, проверяем валидность email или номера телефона
-    if (!validateEmailNumber(emailNumberVal)) {
-      // Если email или номер телефона некорректны, добавляем классы ошибок
-      inputEmailNumber.classList.add('error');
-      document.querySelector('.form__error').innerText = 'Неправильный логин или пароль';
-      document.querySelector('.form__error').style.display = "block";
 
+
+  } else {
+    // если все поля заполнены, проверяем валидность email или номера телефона
+    if (!validateEmailNumber(emailNumberVal)) {
+      // если email или номер телефона некорректны, добавляем классы ошибок
+      inputEmailNumber.classList.add('error');
+      document.querySelector('.form__error').innerText = 'неправильный логин или пароль';
+      document.querySelector('.form__error').style.display = "block";
     } else {
-      authorize(emailNumberVal, inputPassword);
+      await authorize(emailNumberVal, inputPassword.value);
     }
   }
 }
 
-function authorize(emailNumberVal, inputPassword) {
+const authorize = async (emailNumberVal, inputPassword) => {
+  try {
+    const response = await fetch(`https://test-works.pr-uni.ru/api/login/index.php?login=${emailNumberVal}&password=${inputPassword.value}`);
+    const data = await response.json();
 
-  // Отправить запрос на сервер
-  // (API не рабочий или данные логина/пароля недостоверные?)
-  fetch('https://test-works.pr-uni.ru/api/login', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      email_number: emailNumberVal,
-      password: inputPassword.value
-    })
-  })
-    .then(response => {
-      // Скрыть прелоадер и разблокировать форму
+    // определить переменные preloader, form и successText
+    const preloader = document.getElementById('preloader');
+    const form = document.getElementById('form-inputs');
+    const successMessage = document.querySelector('.success');
+    const successText = document.querySelector('.success__text');
+
+    if (response.ok) {
+      // скрыть прелоадер и разблокировать форму
       preloader.style.display = 'none';
       form.classList.remove('disabled');
 
-      if (response.ok) {
-        return response.json();
-      } else {
-        throw new Error('Ошибка при авторизации');
-      }
-    })
-    .then(data => {
-      // Сохранить токен в куки
-      document.cookie = `token = ${data.token}`;
+      // сохранить токен в куки
+      document.cookie = `token=${data.token}`;
 
-      // Скрыть форму и показать текст успеха
+      // скрыть форму и показать текст успеха
       form.style.display = 'none';
-      successText.innerText = `${data.user.name}, Вы успешно авторизованы!`;
-      document.querySelector('.success').style.display = 'block';
-    })
-    .catch(error => {
-      // Обработка ошибок
-      console.error(error);
-      // Вывести ошибку в интерфейсе
-      document.querySelector('.form__error').innerText = 'Ошибка при авторизации';
-    });
+      successText.innerText = `${data.user.name}, вы успешно авторизованы!`;
+      successMessage.style.display = 'block'
+
+      return data.user;
+    } else {
+
+      throw new Error('ошибка при авторизации');
+    }
+  } catch (error) {
+    // обработка ошибок
+    console.error(error);
+
+    // вывести ошибку в интерфейсе
+    document.querySelector('.form__error').innerText = 'ошибка при авторизации';
+  } finally {
+    //скрыть прелоадер в любом случае
+    const preloader = document.getElementById('preloader');
+    preloader.style.display = 'none';
+  }
 }
+
 
